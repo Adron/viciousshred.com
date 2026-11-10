@@ -39,7 +39,7 @@ MX `0 smtp-fwd.wordpress.com` (TTL 300).
 Already added for the move: ACM validation CNAMEs, SES DKIM CNAMEs, SPF `v=spf1 include:amazonses.com ~all`,
 DMARC `v=DMARC1; p=none;`.
 
-Add these 5 CNAMEs in **WordPress.com DNS** too, so ACM and SES verify before the nameserver switch:
+Not added at WordPress (decided 2026-11-10); ACM and SES verify from Route 53 after the nameserver switch. For reference:
 
 | Name | Value |
 |------|-------|

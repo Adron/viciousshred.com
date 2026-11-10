@@ -47,7 +47,10 @@ GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribe
 ## 3. GitHub
 - [x] `git init` locally; GitHub repo `Adron/viciousshred.com` (public, like the other sites)
 - [x] `.github/workflows/pages.yml` builds Jekyll 4 and deploys to Pages (enable Pages with Source: GitHub Actions after the first push)
-- [ ] First workflow run green; preview at https://adron.github.io/viciousshred.com/
+- [x] Pages enabled (Source: GitHub Actions); deploy green 2026-11-10; preview at https://adron.github.io/viciousshred.com/
+  - The first 3 deploys stalled at `syncing_files` until timeout. Bisected on a temporary probe branch (since deleted) down to the byte content of `wp-content/uploads/2023/09/cleanshot-2023-09-19-at-15.29.09.png` (and its identical `-1` copy). A lossless re-encode (0 pixels differ) fixed it. If a future deploy stalls the same way, suspect a single file and bisect the same way.
+  - The emoji-slug post now builds at `/2024/11/27/2025-releases-lining-up-already/`; CloudFront 301s the original URL (`ASCII_PATHS` in `scripts/wp_export.py` and the CloudFront function)
+- [x] CloudFront crawl of all 910 expected WordPress paths: 909 × 200, 1 × 301 (the emoji URL, intended)
 
 ## 4. Domain, DNS, email (Route 53 + CloudFront + SES; runbook in `infra/README.md`)
 - [x] Route 53 hosted zone `Z05638863MNC7XJ7O7WNA` mirroring WordPress.com records exactly (A, www, MX); answers verified identical
@@ -58,7 +61,7 @@ GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribe
 - [ ] SES receipt rule `viciousshred-forwarding` + `FORWARD_MAP` (needs the alias list)
 - [x] Route 53: SPF, DMARC, DKIM CNAMEs
 - [ ] Route 53: MX → SES inbound (right before Phase 1)
-- [ ] **INPUT NEEDED:** add the 3 DKIM + 2 ACM CNAMEs (table in `infra/README.md`) in WordPress.com DNS so both verify before the switch
+- [x] ~~Add the DKIM/ACM CNAMEs at WordPress~~: skipped by choice; no more changes at WordPress DNS. ACM and SES verify from Route 53 minutes after the nameserver switch.
 - [ ] **INPUT NEEDED — Phase 1:** WordPress.com nameservers → the 4 Route 53 servers
 - [ ] Registry delegates to Route 53; WordPress site still loads; mail test forwards
 - [ ] **Phase 2:** attach domain + cert to CloudFront, apex/www A+AAAA alias → CloudFront
