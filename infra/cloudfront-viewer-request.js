@@ -1,5 +1,9 @@
 // CloudFront Function (cloudfront-js-2.0), viewer-request, on the viciousshred.com distribution.
 // Origin is GitHub Pages (adron.github.io, origin path /viciousshred.com).
+var ASCII_PATHS = {
+  "/2024/11/27/2025-releases-lining-up-already-%f0%9f%a4%98%f0%9f%8f%bb/": "/2024/11/27/2025-releases-lining-up-already/",
+};
+
 function handler(event) {
   var req = event.request;
   var host = req.headers.host ? req.headers.host.value : "";
@@ -8,6 +12,12 @@ function handler(event) {
   // Canonical host: www -> apex (real 301, as WordPress did).
   if (host === "www.viciousshred.com") {
     return redirect("https://viciousshred.com" + uri + querystring(req));
+  }
+
+  // WordPress URLs GitHub Pages can't store (emoji in the path); keep in sync with ASCII_PATHS in scripts/wp_export.py.
+  var moved = ASCII_PATHS[uri.toLowerCase()];
+  if (moved) {
+    return redirect(moved + querystring(req));
   }
 
   // WordPress served RSS at /feed/; serve the XML file so readers/FeedBurner get application/xml.

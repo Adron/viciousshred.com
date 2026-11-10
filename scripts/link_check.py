@@ -15,6 +15,9 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from wp_export import ASCII_PATHS  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "_site"
 RAW = ROOT / "_wp_export" / "raw"
@@ -22,6 +25,7 @@ PER_PAGE = 10
 
 
 def exists(path):
+    path = ASCII_PATHS.get(path.lower(), path)
     f = SITE / unquote(path).lstrip("/")
     return (f / "index.html").exists() if path.endswith("/") else f.exists()
 

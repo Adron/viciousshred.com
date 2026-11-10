@@ -303,9 +303,17 @@ def wp_date(post):
     return f"{post['date'].replace('T', ' ')} {sign}{mins // 60:02d}{mins % 60:02d}"
 
 
+# WordPress paths GitHub Pages can't deploy (4-byte UTF-8 such as emoji stalls the Pages sync).
+# Built at the ASCII path; the CloudFront function 301s the original URL to it.
+ASCII_PATHS = {
+    "/2024/11/27/2025-releases-lining-up-already-%f0%9f%a4%98%f0%9f%8f%bb/": "/2024/11/27/2025-releases-lining-up-already/",
+}
+
+
 def permalink_of(link):
     p = urlparse(link)
-    return p.path if p.path.endswith("/") else p.path + "/"
+    path = p.path if p.path.endswith("/") else p.path + "/"
+    return ASCII_PATHS.get(path, path)
 
 
 def sitemap_images():
