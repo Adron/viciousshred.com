@@ -36,13 +36,15 @@ GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribe
 - [ ] First workflow run green; preview at https://adron.github.io/viciousshred.com/
 
 ## 4. Domain, DNS, email (Route 53 + CloudFront + SES; runbook in `infra/README.md`)
-- [ ] Route 53 hosted zone mirroring WordPress.com records exactly (A, www, MX)
-- [ ] ACM certificate (us-east-1) for viciousshred.com + www, DNS-validated in Route 53
-- [ ] CloudFront function (www→apex 301, `/feed/`→XML, directory index) + distribution in front of GitHub Pages
+- [x] Route 53 hosted zone `Z05638863MNC7XJ7O7WNA` mirroring WordPress.com records exactly (A, www, MX); answers verified identical
+- [x] ACM certificate (us-east-1) requested for viciousshred.com + www; validation CNAMEs in Route 53 (pending until DNS moves or they're added at WordPress)
+- [x] CloudFront function `viciousshred-viewer-request` (tested) + distribution `E3QX6L9KA2GL72` (`d3o632003jcb3t.cloudfront.net`) in front of GitHub Pages
 - [ ] **INPUT NEEDED:** list of WordPress email forwards (WordPress.com → Upgrades → Emails → viciousshred.com)
-- [ ] SES inbound forwarding: identity + DKIM, S3 bucket, Lambda `viciousshred-mail-forward`, receipt rule
-- [ ] Route 53: MX → SES inbound, SPF, DMARC, DKIM CNAMEs
-- [ ] **INPUT NEEDED:** add the 3 DKIM CNAMEs in WordPress.com DNS (so SES verifies before the switch)
+- [x] SES identity + DKIM, S3 bucket, IAM role, Lambda `viciousshred-mail-forward` (empty `FORWARD_MAP`)
+- [ ] SES receipt rule `viciousshred-forwarding` + `FORWARD_MAP` (needs the alias list)
+- [x] Route 53: SPF, DMARC, DKIM CNAMEs
+- [ ] Route 53: MX → SES inbound (right before Phase 1)
+- [ ] **INPUT NEEDED:** add the 3 DKIM + 2 ACM CNAMEs (table in `infra/README.md`) in WordPress.com DNS so both verify before the switch
 - [ ] **INPUT NEEDED — Phase 1:** WordPress.com nameservers → the 4 Route 53 servers
 - [ ] Registry delegates to Route 53; WordPress site still loads; mail test forwards
 - [ ] **Phase 2:** attach domain + cert to CloudFront, apex/www A+AAAA alias → CloudFront
