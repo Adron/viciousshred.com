@@ -1,0 +1,29 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>{{ site.title | xml_escape }}</title>
+  <atom:link href="{{ '/feed/' | absolute_url }}" rel="self" type="application/rss+xml" />
+  <link>{{ '/' | absolute_url }}</link>
+  <description>{{ site.description | xml_escape }}</description>
+  <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+  <language>en</language>
+  {%- for post in site.posts limit: 20 %}
+  <item>
+    <title>{{ post.title | xml_escape }}</title>
+    <link>{{ post.url | absolute_url }}</link>
+    <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+    <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+    <dc:creator>{{ site.author.name | xml_escape }}</dc:creator>
+    {%- for c in post.categories %}
+    <category>{{ c | xml_escape }}</category>
+    {%- endfor %}
+    <description>{{ post.description | default: post.excerpt | strip_html | xml_escape }}</description>
+    <content:encoded><![CDATA[{{ post.content | replace: 'src="/', 'src="https://viciousshred.com/' | replace: 'href="/', 'href="https://viciousshred.com/' | replace: ']]>', ']]&gt;' }}]]></content:encoded>
+  </item>
+  {%- endfor %}
+</channel>
+</rss>

@@ -1,0 +1,13 @@
+# Sidebar menu, same order as the WordPress site.
+- title: All Posts
+  url: /all-posts/
+- title: Reaction Vids
+  url: /reaction-vids/
+- title: Unwrapping Vinyls
+  url: /reviews/
+- title: Home Stereo Build
+  url: /reactions/
+- title: About
+  url: /about/
+- title: Search for…
+  url: /search-for/

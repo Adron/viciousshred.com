@@ -1,0 +1,25 @@
+---
+layout: page
+title: Unwrapping Vinyls
+permalink: /reviews/
+---
+{%- comment -%}
+  WordPress rendered this as a query loop of the "Album Reviews" category; this keeps it current.
+  Kept by scripts/wp_export.py (no wp_id).
+{%- endcomment %}
+<p class="wp-block-paragraph">On this page I’ve put together a list of all the vinyl I’ve unwrapped and reviews I’ve done.</p>
+<div class="wp-block-group alignfull is-layout-constrained wp-container-core-group-is-layout-a5588b2a wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--70);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--70);padding-left:var(--wp--preset--spacing--50)">
+<div class="wp-block-query is-layout-flow wp-block-query-is-layout-flow"><ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow">
+{%- for post in site.categories["Album Reviews"] %}
+<li class="wp-block-post post type-post hentry{% if post.image %} has-post-thumbnail{% endif %}">
+<div class="wp-block-group is-layout-constrained wp-container-core-group-is-layout-c6708789 wp-block-group-is-layout-constrained" style="padding-bottom:3rem">
+<div class="wp-block-group is-layout-constrained wp-container-core-group-is-layout-e0082cf6 wp-block-group-is-layout-constrained"><div class="wp-block-post-date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></div>
+<h2 class="has-link-color vs-link-foreground wp-block-post-title" style="font-style:normal;font-weight:700"><a href="{{ post.url | relative_url }}" target="_self">{{ post.title }}</a></h2></div>
+{%- if post.image %}
+<figure class="wp-block-post-featured-image"><a href="{{ post.url | relative_url }}" target="_self"><img alt="{{ post.title | strip_html | escape }}" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" loading="lazy" src="{{ post.image | relative_url }}" style="object-fit:cover;"></a></figure>
+{%- endif %}
+</div>
+</li>
+{%- endfor %}
+</ul></div>
+</div>

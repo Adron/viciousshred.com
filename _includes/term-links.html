@@ -1,0 +1,5 @@
+{%- comment -%} include.terms: list of names, include.kind: category|tag {%- endcomment -%}
+{%- for t in include.terms -%}
+  {%- assign s = t | term_slug: include.kind -%}
+  <a href="{{ '/' | append: include.kind | append: '/' | append: s | append: '/' | relative_url }}" rel="tag">{{ t }}</a>{% unless forloop.last %}<span class="wp-block-post-terms__separator">, </span>{% endunless %}
+{%- endfor -%}

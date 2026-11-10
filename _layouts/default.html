@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% seo %}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }} &raquo; Feed" href="{{ '/feed/' | absolute_url }}">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+  <link rel="icon" href="{{ '/assets/icons/icon-192.png' | relative_url }}" sizes="192x192">
+  <link rel="apple-touch-icon" href="{{ '/assets/icons/icon-180.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/block-library.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/epi.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+</head>
+<body class="{{ page.body_class | default: layout.body_class }} wp-embed-responsive wp-theme-pubepi is-block-theme">
+<a class="skip-link screen-reader-text" href="#wp--skip-link--target">Skip to content</a>
+<div class="wp-site-blocks">
+<div class="wp-block-group is-layout-constrained wp-block-group-is-layout-constrained">
+  <div class="wp-block-columns alignwide is-layout-flex wp-container-core-columns-is-layout-28f84493 wp-block-columns-is-layout-flex">
+    <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow" style="flex-basis:25%">
+      <div class="wp-block-group is-layout-flow wp-block-group-is-layout-flow is-position-sticky vs-sticky" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
+        {% include header.html %}
+      </div>
+    </div>
+    <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow" style="flex-basis:75%">
+      <main id="wp--skip-link--target" class="wp-block-group is-layout-flow wp-block-group-is-layout-flow" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
+        {{ content }}
+      </main>
+    </div>
+  </div>
+  {% include footer.html %}
+</div>
+</div>
+<script src="{{ '/assets/js/navigation.js' | relative_url }}" defer></script>
+</body>
+</html>

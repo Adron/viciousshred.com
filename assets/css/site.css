@@ -1,0 +1,33 @@
+/* Additions for the static port of Epi (things WordPress generated per page or via plugins). */
+
+/* Sticky sidebar (WordPress emitted this as a per-page numbered container class). */
+.vs-sticky {
+	top: 0;
+	position: sticky;
+	z-index: 10;
+}
+
+/* Post-title link colors from the All Posts and Unwrapping Vinyls query loops. */
+.vs-link-contrast a:where(:not(.wp-element-button)) { color: var(--wp--preset--color--contrast); }
+.vs-link-contrast a:where(:not(.wp-element-button)):hover { color: var(--wp--preset--color--primary); }
+.vs-link-foreground a:where(:not(.wp-element-button)) { color: var(--wp--preset--color--foreground); }
+
+/* Jetpack tiled/classic/block galleries, flattened by scripts/wp_export.py into one grid. */
+.vs-gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+	gap: 0.5rem;
+	margin-block: var(--wp--style--block-gap, 1.5rem);
+}
+.vs-gallery figure { margin: 0; }
+.vs-gallery img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+.vs-gallery figcaption { font-size: var(--wp--preset--font-size--small); margin-top: 0.25rem; }
+
+/* Content images never overflow their column. */
+.wp-block-post-content img { max-width: 100%; height: auto; }
+
+/* Mobile menu: WordPress's interactivity script toggled these; assets/js/navigation.js does now. */
+.wp-block-navigation__responsive-container.is-menu-open { display: flex; }
+
+/* WordPress.com set border:0 inline on its YouTube iframes. */
+.wp-block-embed iframe { border: 0; }

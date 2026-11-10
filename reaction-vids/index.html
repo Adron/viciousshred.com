@@ -1,0 +1,20 @@
+---
+layout: page
+title: Reaction Vids
+permalink: /reaction-vids/
+---
+{%- comment -%}
+  WordPress rendered this as a paginated 3-column query loop of the "Reaction / Review" category
+  (?query-16-page=N); here it lists them all. Kept by scripts/wp_export.py (no wp_id).
+{%- endcomment %}
+<div class="wp-block-group alignfull is-layout-constrained wp-container-core-group-is-layout-c7df1b82 wp-block-group-is-layout-constrained" style="margin-top:0px;margin-bottom:0px;padding-top:var(--wp--preset--spacing--80);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--80);padding-left:var(--wp--preset--spacing--50)">
+<div class="wp-block-query alignwide is-layout-flow wp-block-query-is-layout-flow"><ul class="columns-3 wp-block-post-template is-layout-grid wp-container-core-post-template-is-layout-6d3fbd8f wp-block-post-template-is-layout-grid">
+{%- for post in site.categories["Reaction / Review"] %}
+<li class="wp-block-post post type-post hentry{% if post.image %} has-post-thumbnail{% endif %}">
+<div class="wp-block-group is-layout-flow wp-container-core-group-is-layout-cbc6d95f wp-block-group-is-layout-flow" style="padding-bottom:1.5rem">{% if post.image %}<figure class="wp-block-post-featured-image"><a href="{{ post.url | relative_url }}" target="_self"><img alt="{{ post.title | strip_html | escape }}" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" loading="lazy" src="{{ post.image | relative_url }}" style="aspect-ratio:16/9;width:100%;object-fit:cover;"></a></figure>{% endif %}
+<h2 class="wp-block-post-title has-medium-font-size" style="line-height:1.3"><a href="{{ post.url | relative_url }}" target="_self">{{ post.title }}</a></h2>
+<div class="wp-block-post-date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></div></div>
+</li>
+{%- endfor %}
+</ul></div>
+</div>

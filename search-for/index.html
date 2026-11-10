@@ -1,0 +1,11 @@
+---
+layout: page
+title: Search for…
+permalink: /search-for/
+---
+{%- comment -%}
+  No server-side search on a static site; hand off to DuckDuckGo scoped to this domain.
+  Kept by scripts/wp_export.py (no wp_id).
+{%- endcomment %}
+<form action="https://duckduckgo.com/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search" method="get" role="search"><label class="wp-block-search__label" for="wp-block-search__input-1">Search</label><div class="wp-block-search__inside-wrapper"><input class="wp-block-search__input" id="wp-block-search__input-1" name="q" placeholder="" required type="search" value=""><input type="hidden" name="sites" value="viciousshred.com"><button aria-label="Search" class="wp-block-search__button wp-element-button" type="submit">Search</button></div></form>
+<p class="wp-block-paragraph">Or browse <a href="{{ '/all-posts/' | relative_url }}">all posts</a>.</p>

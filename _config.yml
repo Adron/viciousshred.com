@@ -1,0 +1,47 @@
+title: Vicious Shred
+description: Writings, reactions, compositions, and related shredding.
+tagline: Born from a passion and energy of heavy metal, to traverse the odyssey unto itself.
+url: "https://viciousshred.com"
+baseurl: ""
+lang: en_US
+timezone: America/Los_Angeles
+author:
+  name: Adron Hall
+
+# Posts live in posts/_posts (and drafts in posts/_drafts).
+collections_dir: posts
+
+# Matches the WordPress permalink structure so every existing URL is preserved.
+# Imported posts also carry an explicit `permalink:` copied from WordPress.
+permalink: /:year/:month/:day/:title/
+
+# WordPress showed 10 posts per page; matching it keeps /page/N/ (and archive /page/N/) URLs
+# pointing at the same posts.
+paginate: 10
+paginate_path: "/page/:num/"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }
+
+exclude:
+  - .venv
+  - _wp_export
+  - scripts
+  - infra
+  - Gemfile
+  - Gemfile.lock
+  - punch-list.md
+  - README.md
+  - vendor
+  - node_modules
