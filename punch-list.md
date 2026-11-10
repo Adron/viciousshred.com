@@ -11,28 +11,42 @@ sends HSTS (`max-age=31536000`), which is why the site goes behind CloudFront + 
 GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribers.
 
 ## 1. Export content
-- [ ] Export all 228 posts (2011-09-18 → 2023-10-16) and 6 pages (`/about/`, `/all-posts/`,
-      `/reaction-vids/`, `/reviews/`, `/reactions/`, `/search-for/`) from the WordPress.com API
-- [ ] Keep exact WordPress permalinks (`/YYYY/MM/DD/slug/`)
-- [ ] Download all uploads to `/wp-content/uploads/` at the original paths; strip GPS EXIF
-- [ ] Convert YouTube (≈400 refs) and Bandcamp embeds to responsive iframes
-- [ ] Record the 21 category and 360 tag slugs so archive URLs match WordPress
-- [ ] Final re-sync right before cutover
+- [x] Export all 228 posts (2011-09-18 → 2024-12-25) and 6 pages (`/about/`, `/all-posts/`,
+      `/reaction-vids/`, `/reviews/`, `/reactions/`, `/search-for/`) from the WordPress.com API (`scripts/wp_export.py`)
+- [x] Keep exact WordPress permalinks (`/YYYY/MM/DD/slug/`), dates with the original UTC offsets
+- [x] Download all 280 uploads (sitemap images, in-content images, featured images, site icon) to
+      `/wp-content/uploads/` at the original paths, 0 failures; GPS EXIF stripped; images over 1 MB capped at
+      2000px and recompressed (157 → 79 MB for those; uploads total 137 MB). `.webp` files fetched as real WebP
+      (WP.com serves JPEG/PNG bytes otherwise)
+- [x] Clean all 188 YouTube embeds (in 168 posts) into plain responsive iframes (16:9 via the block-library CSS); Bandcamp
+      appears only as links. 5 Jetpack tiled galleries + 1 block gallery flattened to a grid
+- [x] Record the 21 category and 360 tag slugs (`_data/wp_taxonomy.yml`), incl. one percent-encoded Japanese tag
+- [ ] Final re-sync right before cutover (`.venv/bin/python scripts/wp_export.py all`, then commit)
 - [ ] Optional: WordPress.com Tools → Export (WXR + media zip) kept as a backup outside the repo
 
 ## 2. Rebuild in Jekyll
-- [ ] Jekyll 4 site, `permalink: /:year/:month/:day/:title/`, timezone America/Los_Angeles
-- [ ] Category, tag, and date archives at WordPress URLs; home pagination at `/page/N/`
-- [ ] RSS at `/feed/` and `/feed.xml`; `sitemap.xml`; `robots.txt`; `404.html`
-- [ ] SEO tags (canonical, OG, Twitter) on `https://viciousshred.com`; github.io preview `noindex`
-- [ ] Port the WordPress.com **Epi** theme
-- [ ] Local link check: every URL in the live WordPress sitemap resolves in the build
-- [ ] Visual check against the live site, desktop and mobile
-- [ ] README: writing posts, local preview, re-sync
+- [x] Jekyll 4 site, `permalink: /:year/:month/:day/:title/`, timezone America/Los_Angeles
+- [x] Category, tag, author, and year/month/day archives at WordPress URLs, **paginated at `/page/N/` with 10
+      per page like WordPress**; home pagination `/page/2/`–`/page/23/`. Spot-checked against live: `/page/2/`,
+      `/page/23/`, `/category/reaction-review/page/5/`, `/tag/heavy-metal/page/3/`, `/2023/page/2/` list
+      identical posts
+- [x] RSS at `/feed/` and `/feed.xml`; `sitemap.xml`; `robots.txt`; `404.html`; favicon/apple-touch icon from the WP site icon
+- [x] SEO tags (canonical, OG, Twitter, JSON-LD) on `https://viciousshred.com`. Built for the site root like
+      transitsleuth, so the github.io preview isn't a usable duplicate (canonical points at the real domain)
+- [x] Port the WordPress.com **Epi** theme: block-library + Epi global styles/stylesheet captured from the live
+      site, same block markup in the layouts, Inter self-hosted (OFL), mobile menu toggle in
+      `assets/js/navigation.js`
+- [x] All Posts / Reaction Vids / Unwrapping Vinyls were paginated query loops (`?query-N-page=`), which static
+      hosting can't serve; rebuilt as Liquid lists of every post (same markup). Search hands off to DuckDuckGo
+      scoped to the site
+- [x] Local link check (`scripts/link_check.py`): all 235 sitemap URLs, 241 sitemap images, every category/tag
+      archive and its pages, home pagination, feeds — 911 paths, 0 missing; 0 broken internal links
+- [x] Visual check against the live site (headless Chrome, 1440px and 390px): home, post, and mobile match
+- [x] README: writing posts, local preview, re-sync
 
 ## 3. GitHub
 - [x] `git init` locally; GitHub repo `Adron/viciousshred.com` (public, like the other sites)
-- [ ] `.github/workflows/pages.yml` builds Jekyll 4 and deploys to Pages (Source: GitHub Actions)
+- [x] `.github/workflows/pages.yml` builds Jekyll 4 and deploys to Pages (enable Pages with Source: GitHub Actions after the first push)
 - [ ] First workflow run green; preview at https://adron.github.io/viciousshred.com/
 
 ## 4. Domain, DNS, email (Route 53 + CloudFront + SES; runbook in `infra/README.md`)
@@ -65,4 +79,7 @@ GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribe
 ## Known gaps (accepted, same as the other sites)
 - Comments, likes, sharing buttons, Jetpack subscriptions don't carry over.
 - `?p=123` and `wp.me` shortlinks can't be redirected on static hosting.
-- The `/search-for/` page (WordPress search) has no server-side equivalent.
+- The `/search-for/` page (WordPress search) has no server-side equivalent; it hands off to DuckDuckGo.
+- `?query-N-page=` pagination on All Posts / Reaction Vids (query strings are ignored; the page now lists everything).
+- WordPress feeds per archive (`/category/x/feed/`, `/comments/feed/`) and image resize URLs (`?w=1024` is ignored; the original loads).
+- The footer's placeholder Tumblr / Instagram / Email links (`href="#"`) were replaced with RSS and YouTube.
