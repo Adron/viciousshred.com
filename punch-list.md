@@ -56,23 +56,25 @@ GitHub Pages. Site ID 55150850, theme **Epi** (WordPress.com), 8 email subscribe
 - [x] Route 53 hosted zone `Z05638863MNC7XJ7O7WNA` mirroring WordPress.com records exactly (A, www, MX); answers verified identical
 - [x] ACM certificate (us-east-1) requested for viciousshred.com + www; validation CNAMEs in Route 53 (pending until DNS moves or they're added at WordPress)
 - [x] CloudFront function `viciousshred-viewer-request` (tested) + distribution `E3QX6L9KA2GL72` (`d3o632003jcb3t.cloudfront.net`) in front of GitHub Pages
-- [ ] **INPUT NEEDED:** list of WordPress email forwards (WordPress.com → Upgrades → Emails → viciousshred.com)
+- [x] Email forwarding: not needed (decided 2026-11-10). WordPress MX removed; no MX now. SES identity/Lambda/bucket left in place, unused, in case mail is wanted later.
 - [x] SES identity + DKIM, S3 bucket, IAM role, Lambda `viciousshred-mail-forward` (empty `FORWARD_MAP`)
-- [ ] SES receipt rule `viciousshred-forwarding` + `FORWARD_MAP` (needs the alias list)
+- [x] ~~SES receipt rule~~: not needed
 - [x] Route 53: SPF, DMARC, DKIM CNAMEs
-- [ ] Route 53: MX → SES inbound (right before Phase 1)
+- [x] ~~Route 53: MX → SES~~: not needed
 - [x] ~~Add the DKIM/ACM CNAMEs at WordPress~~: skipped by choice; no more changes at WordPress DNS. ACM and SES verify from Route 53 minutes after the nameserver switch.
-- [ ] **INPUT NEEDED — Phase 1:** WordPress.com nameservers → the 4 Route 53 servers
-- [ ] Registry delegates to Route 53; WordPress site still loads; mail test forwards
-- [ ] **Phase 2:** attach domain + cert to CloudFront, apex/www A+AAAA alias → CloudFront
-- [ ] `http://` and `www.` 301 to `https://viciousshred.com/`
+- [x] **Phase 1:** WordPress.com nameservers → the 4 Route 53 servers (saved 2026-11-11 02:11 UTC)
+- [x] Registry delegates to Route 53; 1.1.1.1/8.8.8.8/9.9.9.9 answer from Route 53; ACM certificate `ISSUED`
+- [x] **Phase 2** (2026-11-11): domain + cert on CloudFront, tested with `--resolve`, apex/www A+AAAA aliased to CloudFront, www CNAME deleted
+- [x] `http://` and `www.` 301 to `https://viciousshred.com/`; live crawl of 910 paths on viciousshred.com: 909 × 200, 1 × 301 (emoji URL, intended)
 
 ## 5. Registrar transfer to Route 53 + WordPress wind-down (manual at WordPress.com)
-- [ ] **INPUT NEEDED:** WordPress.com → Domains → viciousshred.com → Transfer → unlock + get the EPP code
+- [x] Transfer lock turned off at WordPress.com (2026-11-11); authorization code emailed to the account's Gmail
+- [ ] **INPUT NEEDED:** the authorization code, and which registrant contact to use
 - [ ] Transfer registration to Route 53 Domains (keep Route 53 nameservers; privacy, auto-renew, lock on)
 - [ ] **INPUT NEEDED:** turn off WordPress.com plan auto-renew; delete the email forwarders
 - [ ] Optional: export the 8 email subscribers
-- [ ] After the transfer completes and the site has run clean for a while: close the WordPress.com site/account
+- [ ] After the transfer completes: delete the Vicious Shred site at WordPress.com
+- [ ] **INPUT NEEDED:** `viciousshred.blog` is also registered at WordPress.com on this site (renews 2027-08-08): transfer, let lapse, or delete
 
 ## 6. Post-cutover checks
 - [ ] Live crawl: every old post, page, category, tag, feed, and sitemap URL returns 200
